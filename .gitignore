@@ -1,0 +1,26 @@
+
+# Dependency directories
+
+node_modules/
+
+# Optional npm cache directory
+
+.npm
+
+# Output of 'npm pack'
+
+\*.tgz
+
+# dotenv environment variables file
+
+.env
+
+# OS X temporary files
+
+.DS_Store
+
+#IDE
+.idea
+.vscode
+
+dist
