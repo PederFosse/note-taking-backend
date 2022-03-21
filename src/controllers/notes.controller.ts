@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { notes } from '../data/notes';
+import { INotes } from '../types';
 
 const { notesService } = require('../services');
 
@@ -29,8 +30,8 @@ const createNewNote = (req: Request, res: Response): void => {
     createdAt: Date.now(),
     updatedAt: Date.now(),
     noteData: {
-      header: '',
-      details: ''
+      header: 'New note',
+      details: 'So many nice thoughts can go in here!'
     }
   };
 
@@ -44,13 +45,17 @@ const updateNote = (req: Request, res: Response) => {
   const note = notesService.getById(req.params.id);
 
   if (note) {
-    const updateNote = req.body;
-    notes.forEach((note) => {
-      if (note.id === req.params.id) {
-        note.noteData.header = updateNote.header;
-        note.noteData.details = updateNote.details;
+    const updNote = req.body;
+    notes.forEach((loopedNote) => {
+      if (loopedNote.id === req.params.id) {
+        loopedNote.noteData.header = updNote.header
+          ? updNote.header
+          : note.noteData.header;
+        loopedNote.noteData.details = updNote.details
+          ? updNote.details
+          : note.noteData.details;
 
-        res.json({ msg: 'Note is updated', note: note });
+        res.json({ msg: 'Note is updated', loopedNote });
       }
     });
   } else {
