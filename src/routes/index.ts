@@ -2,13 +2,15 @@ import { Router } from 'express';
 const dogsRoute = require('./dogs.route');
 const flashcardRoute = require('./flashcards.route');
 const notesRoute = require('./notes.route');
+const qaRoute = require('./qa.route');
 
 const router = Router();
 
 const defaultRoutes = [
   { path: '/dogs', route: dogsRoute },
   { path: '/flashcards', route: flashcardRoute },
-  { path: '/notes', route: notesRoute }
+  { path: '/notes', route: notesRoute },
+  { path: '/qa', route: qaRoute },
 ];
 
 defaultRoutes.forEach((route) => {
