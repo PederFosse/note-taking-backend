@@ -1,6 +1,6 @@
 import { Router } from 'express';
 const dogsRoute = require('./dogs.route');
-const flashCardRoute = require('./flashcards.route')
+const flashCardRoute = require('./flashcards.route');
 
 const router = Router();
 
