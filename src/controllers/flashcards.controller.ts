@@ -27,8 +27,19 @@ const update = (req: Request, res: Response): void => {
   }
 };
 
+const destroy = (req: Request, res: Response): void => {
+  const id = req.params.id;
+  const wasDeleted = flashcardsService.destroy(id);
+  if (wasDeleted) {
+    res.send({ message: 'success' });
+  } else {
+    res.status(404).send({ message: `could not find flashcard with id ${id}` });
+  }
+};
+
 module.exports = {
   getAll,
   create,
-  update
+  update,
+  destroy,
 };

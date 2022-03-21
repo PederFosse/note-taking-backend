@@ -3,11 +3,12 @@ const { flashcardsController } = require('../controllers');
 
 const router = Router();
 
-console.log(flashcardsController);
 router.get('/', flashcardsController.getAll);
 
 router.post('/', flashcardsController.create);
 
 router.put('/:id', flashcardsController.update);
+
+router.delete('/:id', flashcardsController.destroy);
 
 module.exports = router;

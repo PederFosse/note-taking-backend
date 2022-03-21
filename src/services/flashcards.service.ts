@@ -1,7 +1,7 @@
 import { Flashcard, FlashcardInput } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
-const flashcards: Flashcard[] = require('../data/flashcards');
+let flashcards: Flashcard[] = require('../data/flashcards');
 
 const getAll = (): Flashcard[] => flashcards;
 
@@ -28,8 +28,20 @@ const update = (card: FlashcardInput, id: string): Flashcard | false => {
   return updatedCard;
 };
 
+const destroy = (id: string): boolean => {
+  // delete a flashcard
+  const exists = flashcards.find(card => card.id === id);
+  if (exists) {
+    flashcards = flashcards.filter(card => card.id !== id);
+    return true;
+  } else {
+    return false; // throw notfound
+  }
+}
+
 module.exports = {
   getAll,
   create,
   update,
+  destroy
 };
