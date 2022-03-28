@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model FlashcardSet {
+  id        String      @id @unique() @db.Uuid
+  name      String
+  Flashcard Flashcard[]
+
+  @@map("flashcard_set")
+}
+
+model Flashcard {
+  id             String       @id @unique() @db.Uuid
+  header         String
+  front          String
+  back           String
+  flashcardSetId String       @map("flashcard_set_id") @db.Uuid
+  FlashcardSet   FlashcardSet @relation(fields: [flashcardSetId], references: [id], map: "flashcard_flashcard_set_id_foreign")
+  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime     @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("flashcard")
+}
+
+model Question {
+  id        String   @id @unique() @db.Uuid
+  data      String
+  Answer    Answer[]
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("question")
+}
+
+model Answer {
+  id         String   @id @unique() @db.Uuid
+  questionId String   @map("question_id") @db.Uuid
+  data       String
+  question   Question @relation(fields: [questionId], references: [id], map: "answer_question_id_foreign")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("answer")
+}
+
+model Note {
+  id        String   @id @unique() @db.Uuid
+  header    String
+  details   String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("note")
+}

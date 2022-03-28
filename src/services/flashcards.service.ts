@@ -1,35 +1,36 @@
 import { Flashcard, FlashcardInput } from '../types';
 import { v4 as uuidv4 } from 'uuid';
-
+import { PrismaClient } from '@prisma/client';
 let flashcards: Flashcard[] = require('../data/flashcards');
 
 class FlashCardsService {
-  constructor() {}
+  private prisma: PrismaClient;
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
 
   getAll = (): Flashcard[] => flashcards;
 
-  create = (card: FlashcardInput): Flashcard => {
-    const toCreate = { ...card, id: uuidv4() };
-    flashcards.push(toCreate);
-    return toCreate;
-  };
-
-  update = (card: FlashcardInput, id: string): Flashcard | false => {
-    const old = flashcards.find((card) => card.id === id);
-    const index = flashcards.findIndex((card) => card.id === id);
-
-    if (!old) {
-      return false; // TODO should maybe rethrow some notfound() errors instead
-    }
-
-    const updatedCard = {
-      ...old,
+  async create(card: FlashcardInput): Promise<Flashcard> {
+    const data = {
+      id: uuidv4(),
       ...card,
     };
 
-    flashcards[index] = updatedCard;
-    return updatedCard;
-  };
+    await this.prisma.flashcard.create({
+      data,
+    });
+    return data;
+  }
+
+  async update(card: FlashcardInput, id: string): Promise<Flashcard> {
+    const result = await this.prisma.flashcard.update({
+      data: card,
+      where: { id },
+    });
+
+    return result;
+  }
 
   destroy = (id: string): boolean => {
     // delete a flashcard
