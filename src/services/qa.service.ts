@@ -28,15 +28,15 @@ class QAService {
     return await this.prisma.answer.findFirst({ where: { id } });
   }
 
-  async createQuestion(question: QuestionInput): Promise<Question> {
+  async createQuestion(data: QuestionInput): Promise<Question> {
     return await this.prisma.question.create({
-      data: { ...question, id: uuidv4() },
+      data,
     });
   }
 
-  async createAnswer(answer: AnswerInput): Promise<Answer> {
+  async createAnswer(data: AnswerInput): Promise<Answer> {
     return await this.prisma.answer.create({
-      data: { ...answer, id: uuidv4() },
+      data,
     });
   }
 

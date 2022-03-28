@@ -12,12 +12,7 @@ class FlashCardsService {
     return await this.prisma.flashcard.findMany();
   }
 
-  async create(card: FlashcardInput): Promise<Flashcard> {
-    const data = {
-      id: uuidv4(),
-      ...card,
-    };
-
+  async create(data: FlashcardInput): Promise<Flashcard> {
     const created = await this.prisma.flashcard.create({
       data,
     });

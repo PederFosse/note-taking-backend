@@ -4,6 +4,9 @@
   - Added the required column `flashcard_set_id` to the `flashcard` table without a default value. This is not possible if the table is not empty.
 
 */
+-- DropIndex
+DROP INDEX "flashcard_id_key";
+
 -- AlterTable
 ALTER TABLE "flashcard" ADD COLUMN     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 ADD COLUMN     "flashcard_set_id" UUID NOT NULL,
@@ -48,18 +51,6 @@ CREATE TABLE "note" (
 
     CONSTRAINT "note_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "flashcard_set_id_key" ON "flashcard_set"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "question_id_key" ON "question"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "answer_id_key" ON "answer"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "note_id_key" ON "note"("id");
 
 -- AddForeignKey
 ALTER TABLE "flashcard" ADD CONSTRAINT "flashcard_flashcard_set_id_foreign" FOREIGN KEY ("flashcard_set_id") REFERENCES "flashcard_set"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -21,7 +21,7 @@ class FlashCardSetService {
 
   async create(data: Omit<FlashcardSet, 'id'>): Promise<FlashcardSet> {
     return await this.prisma.flashcardSet.create({
-      data: { ...data, id: uuidv4() },
+      data,
     });
   }
 
