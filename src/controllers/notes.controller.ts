@@ -1,17 +1,8 @@
-<<<<<<< HEAD
-/* import { Request, Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-
-import NotesService from '../services/notes.service'
-
-const notes: Array<unknown> = [];
-=======
 // Service for handling the route request and utilizing the correct service in a logical order
 import { Request, Response } from 'express';
 // import { v4 as uuidv4 } from 'uuid';
 import NotesService from '../services/notes.service';
 import { Note } from '../types';
->>>>>>> 84e5305 (added prisma functionality for notes)
 
 class NotesController {
   // Get all notes
@@ -49,4 +40,3 @@ class NotesController {
 }
 
 export default new NotesController();
- */
