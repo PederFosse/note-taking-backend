@@ -15,7 +15,7 @@ class NotesService {
 
   async getById(id: string): Promise<Note> {
     const result = await this.prisma.note.findUnique({
-      where: { id },
+      where: { id }
     });
 
     if (!result) {
@@ -27,26 +27,23 @@ class NotesService {
 
   async createNewNote(data: NoteInput): Promise<Note> {
     return await this.prisma.note.create({
-      data,
+      data
     });
   }
 
-  async updateNote(note: Note, id: string): Promise<Note> {
+  async updateNote(data: NoteInput, id: string): Promise<Note> {
     const updatedNote = await this.prisma.note.update({
       where: { id },
-      data: { ...note },
+      data: { ...data }
     });
 
     return updatedNote;
   }
 
-  async deleteNote(id: string): Promise<Note[]> {
-    await this.prisma.note.delete({
-      where: { id },
+  async deleteNote(id: string): Promise<Note> {
+    return await this.prisma.note.delete({
+      where: { id }
     });
-    const notes = await this.prisma.note.findMany();
-
-    return notes;
   }
 }
 

@@ -13,20 +13,20 @@ class NotesController {
 
   // Get one note
   async getOneNote(req: Request, res: Response): Promise<void> {
-    const note = NotesService.getById(req.params.id);
+    const note = await NotesService.getById(req.params.id);
     res.send(note);
   }
 
   // Create a new note
   async createNewNote(req: Request, res: Response): Promise<void> {
-    const newNote: NoteInput = req.body();
+    const newNote: NoteInput = req.body;
     const created = await NotesService.createNewNote(newNote);
     res.send(created);
   }
 
   // Update a note
   async updateNote(req: Request, res: Response): Promise<void> {
-    const updatedNote = req.body();
+    const updatedNote = req.body;
     const id = req.params.id;
     const updated = await NotesService.updateNote(updatedNote, id);
     res.send(updated);
@@ -34,7 +34,7 @@ class NotesController {
 
   // Delete note
   async deleteNote(req: Request, res: Response): Promise<void> {
-    const result = await NotesService.getById(req.params.id);
+    const result = await NotesService.deleteNote(req.params.id);
     res.send(result);
   }
 }
