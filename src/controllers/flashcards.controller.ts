@@ -1,45 +1,45 @@
 import { Request, Response } from 'express';
 import { Flashcard, FlashcardInput } from '../types';
+import FlashcardsService from '../services/flashcards.service';
 
-const { flashcardsService } = require('../services');
+class FlashcardsController {
+  constructor() {}
 
-const getAll = (req: Request, res: Response): void => {
-  const flashcards: Flashcard[] = flashcardsService.getAll();
-  res.send(flashcards);
-};
+  getAll = (req: Request, res: Response): void => {
+    const flashcards: Flashcard[] = FlashcardsService.getAll();
+    res.send(flashcards);
+  };
 
-const create = (req: Request, res: Response): void => {
-  const flashcard: FlashcardInput = req.body;
-  const created = flashcardsService.create(flashcard);
-  res.send(created);
-};
+  create = (req: Request, res: Response): void => {
+    const flashcard: FlashcardInput = req.body;
+    const created = FlashcardsService.create(flashcard);
+    res.send(created);
+  };
 
-const update = (req: Request, res: Response): void => {
-  const toUpdate: FlashcardInput = req.body;
-  const id: string = req.params.id;
-  const updated = flashcardsService.update(toUpdate, id);
-  if (!updated) {
-    res
-      .status(404)
-      .json({ message: `flashcard with id ${id} does not exist!` });
-  } else {
-    res.send(updated);
-  }
-};
+  update = (req: Request, res: Response): void => {
+    const toUpdate: FlashcardInput = req.body;
+    const id: string = req.params.id;
+    const updated = FlashcardsService.update(toUpdate, id);
+    if (!updated) {
+      res
+        .status(404)
+        .json({ message: `flashcard with id ${id} does not exist!` });
+    } else {
+      res.send(updated);
+    }
+  };
 
-const destroy = (req: Request, res: Response): void => {
-  const id = req.params.id;
-  const wasDeleted = flashcardsService.destroy(id);
-  if (wasDeleted) {
-    res.send({ message: 'success' });
-  } else {
-    res.status(404).send({ message: `could not find flashcard with id ${id}` });
-  }
-};
+  destroy = (req: Request, res: Response): void => {
+    const id = req.params.id;
+    const wasDeleted = FlashcardsService.destroy(id);
+    if (wasDeleted) {
+      res.send({ message: 'success' });
+    } else {
+      res
+        .status(404)
+        .send({ message: `could not find flashcard with id ${id}` });
+    }
+  };
+}
 
-module.exports = {
-  getAll,
-  create,
-  update,
-  destroy,
-};
+export default new FlashcardsController();

@@ -1,20 +1,4 @@
-import { Router } from 'express';
-const dogsRoute = require('./dogs.route');
-const flashcardRoute = require('./flashcards.route');
-const notesRoute = require('./notes.route');
-const qaRoute = require('./qa.route');
-
-const router = Router();
-
-const defaultRoutes = [
-  { path: '/dogs', route: dogsRoute },
-  { path: '/flashcards', route: flashcardRoute },
-  { path: '/notes', route: notesRoute },
-  { path: '/qa', route: qaRoute },
-];
-
-defaultRoutes.forEach((route) => {
-  router.use(route.path, route.route);
-});
-
-module.exports = router;
+export * from './qa.routes.config';
+export * from './notes.routes.config';
+export * from './common.routes.config';
+export * from './flashcards.routes.config';

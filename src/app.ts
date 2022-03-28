@@ -1,12 +1,17 @@
-import express, { NextFunction, Request, Response } from 'express';
-const routes = require('./routes');
+import express from 'express';
+import { CommonRoutesConfig, FlashCardsRoutes, NotesRoutes, QARoutes } from './routes';
 
 const app = express();
+
+const routes: Array<CommonRoutesConfig> = [];
 
 // parse request-body as json
 app.use(express.json());
 
-// dog-route
-app.use('/', routes);
+routes.push(new FlashCardsRoutes(app));
+routes.push(new NotesRoutes(app));
+routes.push(new QARoutes(app));
+
+console.log(routes.map((r) => r.name));
 
 app.listen(8080, () => console.log('server running!'));
