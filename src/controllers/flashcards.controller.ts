@@ -31,14 +31,8 @@ class FlashcardsController {
 
   destroy = (req: Request, res: Response): void => {
     const id = req.params.id;
-    const wasDeleted = FlashcardsService.destroy(id);
-    if (wasDeleted) {
-      res.send({ message: 'success' });
-    } else {
-      res
-        .status(404)
-        .send({ message: `could not find flashcard with id ${id}` });
-    }
+    const result = FlashcardsService.destroy(id);
+    res.send(result);
   };
 }
 

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { notes } from '../data/notes';
-import { INotes } from '../types';
 
 import NotesService from '../services/notes.service'
+
+const notes: Array<unknown> = [];
 
 class NotesController {
   // Get all notes

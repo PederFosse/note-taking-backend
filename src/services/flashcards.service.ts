@@ -32,16 +32,13 @@ class FlashCardsService {
     return result;
   }
 
-  destroy = (id: string): boolean => {
+  async destroy(id: string): Promise<Flashcard> {
     // delete a flashcard
-    const exists = flashcards.find((card) => card.id === id);
-    if (exists) {
-      flashcards = flashcards.filter((card) => card.id !== id);
-      return true;
-    } else {
-      return false; // throw notfound
-    }
-  };
+    const result = await this.prisma.flashcard.delete({
+      where: { id },
+    });
+    return result;
+  }
 }
 
 export default new FlashCardsService();

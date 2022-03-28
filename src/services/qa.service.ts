@@ -1,9 +1,6 @@
 import { Answer, AnswerInput, Question, QuestionInput } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
-let questions: Question[] = require('../data/qa/questions');
-let answers: Answer[] = require('../data/qa/answers');
-
 class QAService {
   getAllQuestions = (): Question[] => questions;
 
