@@ -1,6 +1,5 @@
-import { Flashcard, FlashcardInput } from '../types';
-import { v4 as uuidv4 } from 'uuid';
-import { PrismaClient } from '@prisma/client';
+import { Flashcard, PrismaClient } from '@prisma/client';
+import { FlashcardInput } from '../types';
 
 class FlashCardsService {
   private prisma: PrismaClient;

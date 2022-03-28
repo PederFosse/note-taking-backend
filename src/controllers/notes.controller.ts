@@ -1,8 +1,8 @@
 // Service for handling the route request and utilizing the correct service in a logical order
+import { Note } from '@prisma/client';
 import { Request, Response } from 'express';
-// import { v4 as uuidv4 } from 'uuid';
 import NotesService from '../services/notes.service';
-import { Note } from '../types';
+import { NoteInput } from '../types';
 
 class NotesController {
   // Get all notes
@@ -19,7 +19,7 @@ class NotesController {
 
   // Create a new note
   async createNewNote(req: Request, res: Response): Promise<void> {
-    const newNote: Note = req.body();
+    const newNote: NoteInput = req.body();
     const created = await NotesService.createNewNote(newNote);
     res.send(created);
   }

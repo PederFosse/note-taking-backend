@@ -1,6 +1,7 @@
+import { Flashcard } from '@prisma/client';
 import { Request, Response } from 'express';
-import { Flashcard, FlashcardInput } from '../types';
 import FlashcardsService from '../services/flashcards.service';
+import { FlashcardInput } from '../types';
 
 class FlashcardsController {
   constructor() {}

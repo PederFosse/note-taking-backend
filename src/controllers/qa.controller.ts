@@ -1,6 +1,7 @@
+import { Answer, Question } from '@prisma/client';
 import { Request, Response } from 'express';
-import { Answer, AnswerInput, Question, QuestionInput } from '../types';
 import QAService from '../services/qa.service';
+import { AnswerInput, QuestionInput } from '../types';
 
 class QAController {
   async createQuestion(req: Request, res: Response): Promise<void> {

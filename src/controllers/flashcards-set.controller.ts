@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { Flashcard, FlashcardInput } from '../types';
 import FlashcardSetService from '../services/flashcard-set.service';
 import { FlashcardSet } from '@prisma/client';
 

@@ -1,7 +1,6 @@
 // Service for handling database logic
-import { Note } from '../types';
-import { PrismaClient } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
+import { Note, PrismaClient } from '@prisma/client';
+import { NoteInput } from '../types';
 
 class NotesService {
   private prisma: PrismaClient;
@@ -16,7 +15,7 @@ class NotesService {
 
   async getById(id: string): Promise<Note> {
     const result = await this.prisma.note.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!result) {
@@ -26,21 +25,16 @@ class NotesService {
     return result;
   }
 
-  async createNewNote(note: Note): Promise<Note> {
-    const newNote = await this.prisma.note.create({
-      data: {
-        ...note,
-        id: uuidv4()
-      }
+  async createNewNote(data: NoteInput): Promise<Note> {
+    return await this.prisma.note.create({
+      data,
     });
-
-    return newNote;
   }
 
   async updateNote(note: Note, id: string): Promise<Note> {
     const updatedNote = await this.prisma.note.update({
       where: { id },
-      data: { ...note }
+      data: { ...note },
     });
 
     return updatedNote;
@@ -48,7 +42,7 @@ class NotesService {
 
   async deleteNote(id: string): Promise<Note[]> {
     await this.prisma.note.delete({
-      where: { id }
+      where: { id },
     });
     const notes = await this.prisma.note.findMany();
 

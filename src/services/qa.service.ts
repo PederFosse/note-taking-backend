@@ -1,5 +1,4 @@
 import { Answer, AnswerInput, Question, QuestionInput } from '../types';
-import { v4 as uuidv4 } from 'uuid';
 import { PrismaClient } from '@prisma/client';
 
 class QAService {
