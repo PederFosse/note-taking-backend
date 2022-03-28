@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 /* import { Application, Router } from "express";
 import { CommonRoutesConfig } from "./common.routes.config";
+=======
+// Route for handling request urls and sending to controller
+import { Application, Router } from 'express';
+import { CommonRoutesConfig } from './common.routes.config';
+>>>>>>> 84e5305 (added prisma functionality for notes)
 
-import NotesController from "../controllers/notes.controller";
+import NotesController from '../controllers/notes.controller';
 
 export class NotesRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -29,4 +35,8 @@ export class NotesRoutes extends CommonRoutesConfig {
     this.app.use(this.getName(), router);
     return this.app;
   }
+<<<<<<< HEAD
 } */
+=======
+}
+>>>>>>> 84e5305 (added prisma functionality for notes)
