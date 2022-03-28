@@ -1,4 +1,4 @@
-import { Application, Router } from "express";
+/* import { Application, Router } from "express";
 import { CommonRoutesConfig } from "./common.routes.config";
 
 import NotesController from "../controllers/notes.controller";
@@ -29,4 +29,4 @@ export class NotesRoutes extends CommonRoutesConfig {
     this.app.use(this.getName(), router);
     return this.app;
   }
-}
+} */

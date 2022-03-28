@@ -7,4 +7,6 @@ export interface FlashcardInput {
 
 export interface Flashcard extends FlashcardInput {
   id: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

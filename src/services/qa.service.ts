@@ -1,99 +1,70 @@
 import { Answer, AnswerInput, Question, QuestionInput } from '../types';
 import { v4 as uuidv4 } from 'uuid';
+import { PrismaClient } from '@prisma/client';
 
 class QAService {
-  getAllQuestions = (): Question[] => questions;
+  private prisma: PrismaClient;
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
 
-  getAnswersToQuestion = (questionId: string): Answer[] => {
-    const result = answers.filter((a) => a.questionId === questionId);
-    return result;
-  };
+  async getAllQuestions(): Promise<Question[]> {
+    return await this.prisma.question.findMany();
+  }
 
-  getOneQuestion = (id: string): Question | false => {
-    const result = questions.find((q) => q.id === id);
-    if (!result) {
-      return false; // throw not found
-    }
-    return result;
-  };
+  async getAnswersToQuestion(questionId: string): Promise<Answer[]> {
+    return await this.prisma.answer.findMany({
+      where: { questionId },
+    });
+  }
 
-  getOneAnswer = (id: string): Answer | false => {
-    const result = answers.find((a) => a.id === id);
-    if (!result) {
-      return false; // throw not found
-    }
-    return result;
-  };
+  async getOneQuestion(id: string): Promise<Question | null> {
+    return await this.prisma.question.findFirst({
+      where: { id },
+    });
+  }
 
-  createQuestion = (q: QuestionInput): Question => {
-    const toCreate = { ...q, id: uuidv4() };
-    questions.push(toCreate);
-    return toCreate;
-  };
+  async getOneAnswer(id: string): Promise<Answer | null> {
+    return await this.prisma.answer.findFirst({ where: { id } });
+  }
 
-  createAnswer = (a: AnswerInput): Answer => {
-    const toCreate = { ...a, id: uuidv4() };
-    answers.push(toCreate);
-    return toCreate;
-  };
+  async createQuestion(question: QuestionInput): Promise<Question> {
+    return await this.prisma.question.create({
+      data: { ...question, id: uuidv4() },
+    });
+  }
 
-  updateQuestion = (q: QuestionInput, id: string): Question | false => {
-    const oldQuestion = questions.find((q) => q.id === id);
-    const index = questions.findIndex((q) => q.id === id);
+  async createAnswer(answer: AnswerInput): Promise<Answer> {
+    return await this.prisma.answer.create({
+      data: { ...answer, id: uuidv4() },
+    });
+  }
 
-    // question with id = id does not exist in "db"
-    if (!oldQuestion) {
-      return false; // throw notfound()
-    }
+  async updateQuestion(data: QuestionInput, id: string): Promise<Question> {
+    return await this.prisma.question.update({
+      data,
+      where: { id },
+    });
+  }
 
-    const updatedQuestion = {
-      ...oldQuestion,
-      ...q,
-    };
+  async updateAnswer(data: AnswerInput, id: string): Promise<Answer> {
+    return await this.prisma.answer.update({
+      data,
+      where: { id },
+    });
+  }
 
-    questions[index] = updatedQuestion;
-    return updatedQuestion;
-  };
+  async destroyQuestion(id: string): Promise<Question> {
+    return await this.prisma.question.delete({
+      where: { id },
+    });
+  }
 
-  updateAnswer = (q: AnswerInput, id: string): Answer | false => {
-    const oldAnswer = answers.find((q) => q.id === id);
-    const index = answers.findIndex((q) => q.id === id);
-
-    // answer with id = id does not exist in "db"
-    if (!oldAnswer) {
-      return false; // throw notfound()
-    }
-
-    const updatedanswer = {
-      ...oldAnswer,
-      ...q,
-    };
-
-    answers[index] = updatedanswer;
-    return updatedanswer;
-  };
-
-  destroyQuestion = (id: string): boolean => {
-    // delete a qestion
-    const exists = questions.find((q) => q.id === id);
-    if (exists) {
-      questions = questions.filter((q) => q.id !== id);
-      return true;
-    } else {
-      return false; // throw notfound
-    }
-  };
-
-  destroyAnswer = (id: string): boolean => {
-    // delete a qestion
-    const exists = answers.find((a) => a.id === id);
-    if (exists) {
-      answers = answers.filter((a) => a.id !== id);
-      return true;
-    } else {
-      return false; // throw notfound
-    }
-  };
+  async destroyAnswer(id: string): Promise<Answer> {
+    return await this.prisma.answer.delete({
+      where: { id },
+    });
+  }
 }
 
 export default new QAService();

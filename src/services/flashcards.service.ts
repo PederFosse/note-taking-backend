@@ -1,7 +1,6 @@
 import { Flashcard, FlashcardInput } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaClient } from '@prisma/client';
-let flashcards: Flashcard[] = require('../data/flashcards');
 
 class FlashCardsService {
   private prisma: PrismaClient;
@@ -9,7 +8,9 @@ class FlashCardsService {
     this.prisma = new PrismaClient();
   }
 
-  getAll = (): Flashcard[] => flashcards;
+  async getAll(): Promise<Flashcard[]> {
+    return await this.prisma.flashcard.findMany();
+  }
 
   async create(card: FlashcardInput): Promise<Flashcard> {
     const data = {
@@ -17,10 +18,10 @@ class FlashCardsService {
       ...card,
     };
 
-    await this.prisma.flashcard.create({
+    const created = await this.prisma.flashcard.create({
       data,
     });
-    return data;
+    return created;
   }
 
   async update(card: FlashcardInput, id: string): Promise<Flashcard> {

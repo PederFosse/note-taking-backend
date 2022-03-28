@@ -1,25 +1,26 @@
 import { Request, Response } from 'express';
 import { Flashcard, FlashcardInput } from '../types';
-import FlashcardsService from '../services/flashcards.service';
+import FlashcardSetService from '../services/flashcard-set.service';
+import { FlashcardSet } from '@prisma/client';
 
-class FlashcardsController {
+class FlashcardsSetController {
   constructor() {}
 
   async getAll(req: Request, res: Response): Promise<void> {
-    const flashcards: Flashcard[] = await FlashcardsService.getAll();
-    res.send(flashcards);
+    const flashcardSets: FlashcardSet[] = await FlashcardSetService.getAll();
+    res.send(flashcardSets);
   }
 
   async create(req: Request, res: Response): Promise<void> {
-    const flashcard: FlashcardInput = req.body;
-    const created = await FlashcardsService.create(flashcard);
+    const flashcardSet: Omit<FlashcardSet, 'id'> = req.body;
+    const created = await FlashcardSetService.create(flashcardSet);
     res.send(created);
   }
 
   async update(req: Request, res: Response): Promise<void> {
-    const toUpdate: FlashcardInput = req.body;
+    const toUpdate: Omit<FlashcardSet, 'id'> = req.body;
     const id: string = req.params.id;
-    const updated = await FlashcardsService.update(toUpdate, id);
+    const updated = await FlashcardSetService.update(toUpdate, id);
     if (!updated) {
       res
         .status(404)
@@ -31,9 +32,9 @@ class FlashcardsController {
 
   async destroy(req: Request, res: Response): Promise<void> {
     const id = req.params.id;
-    const result = await FlashcardsService.destroy(id);
+    const result = await FlashcardSetService.delete(id);
     res.send(result);
   }
 }
 
-export default new FlashcardsController();
+export default new FlashcardsSetController();

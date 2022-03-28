@@ -1,9 +1,11 @@
 export interface QuestionInput {
-  question: string;
+  data: string;
 }
 
 export interface Question extends QuestionInput {
   id: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface AnswerInput {
@@ -13,4 +15,6 @@ export interface AnswerInput {
 
 export interface Answer extends AnswerInput {
   id: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
