@@ -1,46 +1,51 @@
-import { Flashcard, FlashcardInput } from '../types';
-import { v4 as uuidv4 } from 'uuid';
-
-let flashcards: Flashcard[] = require('../data/flashcards');
+import { Flashcard, PrismaClient } from '@prisma/client';
+import { FlashcardInput } from '../types';
 
 class FlashCardsService {
-  constructor() {}
+  private prisma: PrismaClient;
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
 
-  getAll = (): Flashcard[] => flashcards;
+  async getAll(): Promise<Flashcard[]> {
+    return await this.prisma.flashcard.findMany();
+  }
 
-  create = (card: FlashcardInput): Flashcard => {
-    const toCreate = { ...card, id: uuidv4() };
-    flashcards.push(toCreate);
-    return toCreate;
-  };
+  async getOne(id: string): Promise<Flashcard> {
+    const result = await this.prisma.flashcard.findFirst({
+      where: { id },
+    });
 
-  update = (card: FlashcardInput, id: string): Flashcard | false => {
-    const old = flashcards.find((card) => card.id === id);
-    const index = flashcards.findIndex((card) => card.id === id);
-
-    if (!old) {
-      return false; // TODO should maybe rethrow some notfound() errors instead
+    if (!result) {
+      throw new Error('not found');
     }
 
-    const updatedCard = {
-      ...old,
-      ...card,
-    };
+    return result;
+  }
 
-    flashcards[index] = updatedCard;
-    return updatedCard;
-  };
+  async create(data: FlashcardInput): Promise<Flashcard> {
+    const created = await this.prisma.flashcard.create({
+      data,
+    });
+    return created;
+  }
 
-  destroy = (id: string): boolean => {
+  async update(card: FlashcardInput, id: string): Promise<Flashcard> {
+    const result = await this.prisma.flashcard.update({
+      data: card,
+      where: { id },
+    });
+
+    return result;
+  }
+
+  async destroy(id: string): Promise<Flashcard> {
     // delete a flashcard
-    const exists = flashcards.find((card) => card.id === id);
-    if (exists) {
-      flashcards = flashcards.filter((card) => card.id !== id);
-      return true;
-    } else {
-      return false; // throw notfound
-    }
-  };
+    const result = await this.prisma.flashcard.delete({
+      where: { id },
+    });
+    return result;
+  }
 }
 
 export default new FlashCardsService();

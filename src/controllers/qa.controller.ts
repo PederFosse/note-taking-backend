@@ -1,41 +1,42 @@
+import { Answer, Question } from '@prisma/client';
 import { Request, Response } from 'express';
-import { Answer, AnswerInput, Question, QuestionInput } from '../types';
 import QAService from '../services/qa.service';
+import { AnswerInput, QuestionInput } from '../types';
 
 class QAController {
-  createQuestion = (req: Request, res: Response): void => {
-    const question: Question = QAService.createQuestion(req.body);
+  async createQuestion(req: Request, res: Response): Promise<void> {
+    const question: Question = await QAService.createQuestion(req.body);
     res.send(question);
-  };
+  }
 
-  createAnswer = (req: Request, res: Response): void => {
+  async createAnswer(req: Request, res: Response): Promise<void> {
     const id = req.params.id;
     const answerInput: AnswerInput = { ...req.body, questionId: id };
-    const answer: Answer = QAService.createAnswer(answerInput);
+    const answer: Answer = await QAService.createAnswer(answerInput);
     res.send(answer);
-  };
+  }
 
-  getAllQuestions = (req: Request, res: Response): void => {
-    const questions: Question[] = QAService.getAllQuestions();
+  async getAllQuestions(req: Request, res: Response): Promise<void> {
+    const questions: Question[] = await QAService.getAllQuestions();
     res.send(questions);
-  };
+  }
 
-  getOneQuestion = (req: Request, res: Response): void => {
-    const questionId = req.params.id;
-    const question: Question | false = QAService.getOneQuestion(questionId);
-    if (!question) {
+  async getOneQuestion(req: Request, res: Response): Promise<void> {
+    try {
+      const answer = await QAService.getOneQuestion(req.params.id);
+      res.send(answer);
+    } catch (e) {
       res
         .status(404)
-        .json({ message: `could not find question with id ${questionId}` });
-    } else {
-      res.send(question);
+        .json({ message: `could not find answer with id ${req.params.id}` });
     }
-  };
+  }
 
-  getAnswersToQuestion = (req: Request, res: Response): void => {
+  async getAnswersToQuestion(req: Request, res: Response): Promise<void> {
     const questionId = req.params.id;
-    const answers: Answer[] | false =
-      QAService.getAnswersToQuestion(questionId);
+    const answers: Answer[] | false = await QAService.getAnswersToQuestion(
+      questionId
+    );
     if (!answers) {
       res
         .status(404)
@@ -43,22 +44,26 @@ class QAController {
     } else {
       res.send(answers);
     }
-  };
+  }
 
-  getOneAnswer = (req: Request, res: Response): void => {
-    const id = req.params.id;
-    const answer: Answer | false = QAService.getOneAnswer(id);
-    if (!answer) {
-      res.status(404).json({ message: `could not find answer with id ${id}` });
-    } else {
+  async getOneAnswer(req: Request, res: Response): Promise<void> {
+    try {
+      const answer = await QAService.getOneAnswer(req.params.id);
       res.send(answer);
+    } catch (e) {
+      res
+        .status(404)
+        .json({ message: `could not find answer with id ${req.params.id}` });
     }
-  };
+  }
 
-  updateQuestion = (req: Request, res: Response): void => {
+  async updateQuestion(req: Request, res: Response): Promise<void> {
     const toUpdate: QuestionInput = req.body;
     const id: string = req.params.id;
-    const updated: Question | false = QAService.updateQuestion(toUpdate, id);
+    const updated = await QAService.updateQuestion(
+      toUpdate,
+      id
+    );
     if (!updated) {
       res
         .status(404)
@@ -66,40 +71,30 @@ class QAController {
     } else {
       res.send(updated);
     }
-  };
+  }
 
-  updateAnswer = (req: Request, res: Response): void => {
+  async updateAnswer(req: Request, res: Response): Promise<void> {
     const toUpdate: AnswerInput = req.body;
     const id: string = req.params.id;
-    const updated: Answer | false = QAService.updateAnswer(toUpdate, id);
+    const updated = await QAService.updateAnswer(toUpdate, id);
     if (!updated) {
       res.status(404).json({ message: `could not find answer with id ${id}` });
     } else {
       res.send(updated);
     }
-  };
+  }
 
-  destroyQuestion = (req: Request, res: Response): void => {
+  async destroyQuestion(req: Request, res: Response): Promise<void> {
     const id = req.params.id;
-    const wasDeleted: boolean = QAService.destroyQuestion(id);
-    if (wasDeleted) {
-      res.send({ message: 'success' });
-    } else {
-      res
-        .status(404)
-        .json({ message: `could not find question with id ${id}` });
-    }
-  };
+    const result = await QAService.destroyQuestion(id);
+    res.send(result);
+  }
 
-  destroyAnswer = (req: Request, res: Response): void => {
+  async destroyAnswer(req: Request, res: Response): Promise<void> {
     const id = req.params.id;
-    const wasDeleted: boolean = QAService.destroyAnswer(id);
-    if (wasDeleted) {
-      res.send({ message: 'success' });
-    } else {
-      res.status(404).json({ message: `could not find answer with id ${id}` });
-    }
-  };
+    const result = await QAService.destroyAnswer(id);
+    res.send(result);
+  }
 }
 
 export default new QAController();

@@ -1,5 +1,11 @@
 import express from 'express';
-import { CommonRoutesConfig, FlashCardsRoutes, NotesRoutes, QARoutes } from './routes';
+import {
+  CommonRoutesConfig,
+  FlashCardsRoutes,
+  FlashcardsSetRoutes,
+  NotesRoutes,
+  QARoutes
+} from './routes';
 
 const app = express();
 
@@ -11,6 +17,7 @@ app.use(express.json());
 routes.push(new FlashCardsRoutes(app));
 routes.push(new NotesRoutes(app));
 routes.push(new QARoutes(app));
+routes.push(new FlashcardsSetRoutes(app));
 
 console.log(routes.map((r) => r.name));
 
