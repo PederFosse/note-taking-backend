@@ -3,7 +3,8 @@ import {
   CommonRoutesConfig,
   FlashCardsRoutes,
   FlashcardsSetRoutes,
-  QARoutes,
+  NotesRoutes,
+  QARoutes
 } from './routes';
 
 const app = express();
@@ -14,7 +15,7 @@ const routes: Array<CommonRoutesConfig> = [];
 app.use(express.json());
 
 routes.push(new FlashCardsRoutes(app));
-// routes.push(new NotesRoutes(app));
+routes.push(new NotesRoutes(app));
 routes.push(new QARoutes(app));
 routes.push(new FlashcardsSetRoutes(app));
 
