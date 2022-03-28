@@ -1,8 +1,5 @@
-import express, { NextFunction, Request, Response, Router } from 'express';
-import { CommonRoutesConfig } from './routes/common.routes.config';
-import { FlashCardsRoutes } from './routes/flashcards.routes.config';
-import { NotesRoutes } from './routes/notes.routes.config';
-import { QARoutes } from './routes/qa.routes.config';
+import express from 'express';
+import { CommonRoutesConfig, FlashCardsRoutes, NotesRoutes, QARoutes } from './routes';
 
 const app = express();
 

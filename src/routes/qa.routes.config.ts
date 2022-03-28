@@ -1,5 +1,5 @@
 import { Application, Router } from 'express';
-import { CommonRoutesConfig } from './common.routes.config';
+import { CommonRoutesConfig } from '.';
 import QAController from '../controllers/qa.controller';
 
 export class QARoutes extends CommonRoutesConfig {
