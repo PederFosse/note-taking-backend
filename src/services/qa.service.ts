@@ -1,5 +1,5 @@
-import { Answer, AnswerInput, Question, QuestionInput } from '../types';
-import { PrismaClient } from '@prisma/client';
+import { AnswerInput, QuestionInput } from '../types';
+import { Answer, PrismaClient, Question } from '@prisma/client';
 
 class QAService {
   private prisma: PrismaClient;
