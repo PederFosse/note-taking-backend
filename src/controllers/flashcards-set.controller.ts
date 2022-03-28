@@ -10,6 +10,15 @@ class FlashcardsSetController {
     res.send(flashcardSets);
   }
 
+  async getOne(req: Request, res: Response): Promise<void> {
+    try {
+      const flashcardSet = await FlashcardSetService.getOne(req.params.id);
+      res.send(flashcardSet)
+    } catch (e) {
+      res.status(404).send({ message: 'flashcard set not found' });
+    }
+  }
+
   async create(req: Request, res: Response): Promise<void> {
     const flashcardSet: Omit<FlashcardSet, 'id'> = req.body;
     const created = await FlashcardSetService.create(flashcardSet);

@@ -14,6 +14,8 @@ export class FlashcardsSetRoutes extends CommonRoutesConfig {
 
     router.post('/', FlashcardsSetController.create);
 
+    router.get('/:id', FlashcardsSetController.getOne);
+
     router.put('/:id', FlashcardsSetController.update);
 
     router.delete('/:id', FlashcardsSetController.destroy);

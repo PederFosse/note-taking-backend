@@ -22,16 +22,13 @@ class QAController {
   }
 
   async getOneQuestion(req: Request, res: Response): Promise<void> {
-    const questionId = req.params.id;
-    const question: Question | null = await QAService.getOneQuestion(
-      questionId
-    );
-    if (!question) {
+    try {
+      const answer = await QAService.getOneQuestion(req.params.id);
+      res.send(answer);
+    } catch (e) {
       res
         .status(404)
-        .json({ message: `could not find question with id ${questionId}` });
-    } else {
-      res.send(question);
+        .json({ message: `could not find answer with id ${req.params.id}` });
     }
   }
 
@@ -50,19 +47,20 @@ class QAController {
   }
 
   async getOneAnswer(req: Request, res: Response): Promise<void> {
-    const id = req.params.id;
-    const answer: Answer | null = await QAService.getOneAnswer(id);
-    if (!answer) {
-      res.status(404).json({ message: `could not find answer with id ${id}` });
-    } else {
+    try {
+      const answer = await QAService.getOneAnswer(req.params.id);
       res.send(answer);
+    } catch (e) {
+      res
+        .status(404)
+        .json({ message: `could not find answer with id ${req.params.id}` });
     }
   }
 
   async updateQuestion(req: Request, res: Response): Promise<void> {
     const toUpdate: QuestionInput = req.body;
     const id: string = req.params.id;
-    const updated: Question | false = await QAService.updateQuestion(
+    const updated = await QAService.updateQuestion(
       toUpdate,
       id
     );
@@ -78,7 +76,7 @@ class QAController {
   async updateAnswer(req: Request, res: Response): Promise<void> {
     const toUpdate: AnswerInput = req.body;
     const id: string = req.params.id;
-    const updated: Answer | false = await QAService.updateAnswer(toUpdate, id);
+    const updated = await QAService.updateAnswer(toUpdate, id);
     if (!updated) {
       res.status(404).json({ message: `could not find answer with id ${id}` });
     } else {
@@ -88,7 +86,7 @@ class QAController {
 
   async destroyQuestion(req: Request, res: Response): Promise<void> {
     const id = req.params.id;
-    const result: Question = await QAService.destroyQuestion(id);
+    const result = await QAService.destroyQuestion(id);
     res.send(result);
   }
 

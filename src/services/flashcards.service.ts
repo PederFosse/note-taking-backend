@@ -11,6 +11,18 @@ class FlashCardsService {
     return await this.prisma.flashcard.findMany();
   }
 
+  async getOne(id: string): Promise<Flashcard> {
+    const result = await this.prisma.flashcard.findFirst({
+      where: { id },
+    });
+
+    if (!result) {
+      throw new Error('not found');
+    }
+
+    return result;
+  }
+
   async create(data: FlashcardInput): Promise<Flashcard> {
     const created = await this.prisma.flashcard.create({
       data,

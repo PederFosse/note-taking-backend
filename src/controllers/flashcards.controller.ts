@@ -7,8 +7,17 @@ class FlashcardsController {
   constructor() {}
 
   async getAll(req: Request, res: Response): Promise<void> {
-    const flashcards: Flashcard[] = await FlashcardsService.getAll();
+    const flashcards = await FlashcardsService.getAll();
     res.send(flashcards);
+  }
+
+  async getOne(req: Request, res: Response): Promise<void> {
+    try {
+      const flashcard = await FlashcardsService.getOne(req.params.id);
+      res.send(flashcard);
+    } catch (e) {
+      res.status(404).send({ message: 'flashcard not found' });
+    }
   }
 
   async create(req: Request, res: Response): Promise<void> {

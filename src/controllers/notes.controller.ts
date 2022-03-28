@@ -12,9 +12,13 @@ class NotesController {
   }
 
   // Get one note
-  async getOneNote(req: Request, res: Response): Promise<void> {
-    const note = await NotesService.getById(req.params.id);
-    res.send(note);
+  async getOne(req: Request, res: Response): Promise<void> {
+    try {
+      const note = await NotesService.getOne(req.params.id);
+      res.send(note);
+    } catch (e) {
+      res.status(404).send({ message: 'not found' });
+    }
   }
 
   // Create a new note

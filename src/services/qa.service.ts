@@ -18,13 +18,19 @@ class QAService {
   }
 
   async getOneQuestion(id: string): Promise<Question | null> {
-    return await this.prisma.question.findFirst({
-      where: { id },
-    });
+    const result = await this.prisma.question.findFirst({ where: { id } });
+    if (!result) {
+      throw new Error('not found');
+    }
+    return result;
   }
 
-  async getOneAnswer(id: string): Promise<Answer | null> {
-    return await this.prisma.answer.findFirst({ where: { id } });
+  async getOneAnswer(id: string): Promise<Answer> {
+    const result = await this.prisma.answer.findFirst({ where: { id } });
+    if (!result) {
+      throw new Error('not found');
+    }
+    return result;
   }
 
   async createQuestion(data: QuestionInput): Promise<Question> {

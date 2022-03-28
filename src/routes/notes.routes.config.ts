@@ -16,7 +16,7 @@ export class NotesRoutes extends CommonRoutesConfig {
     router.get('/', NotesController.getAllNotes);
 
     // Get one note
-    router.get('/:id', NotesController.getOneNote);
+    router.get('/:id', NotesController.getOne);
 
     // Create new note
     router.post('/', NotesController.createNewNote);
