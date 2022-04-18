@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  web:
+    container_name: atc-api
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/atcampus-notes?schema=public
+  postgres:
+    image: postgres
+    container_name: note-postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data
