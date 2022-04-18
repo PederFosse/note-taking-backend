@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "npx prisma migrate deploy && node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "dev": "nodemon --transpile-only src/app.ts",
     "build": "tsc -p ."
   },
   "keywords": [],
@@ -14,12 +14,16 @@
   "dependencies": {
     "@hapi/boom": "^9.1.4",
     "@prisma/client": "^3.11.1",
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.3",
+    "express-session": "^1.17.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/boom": "^7.3.1",
     "@types/express": "^4.17.13",
+    "@types/express-session": "^1.17.4",
     "@types/node": "^17.0.21",
     "nodemon": "^2.0.15",
     "prisma": "^3.11.1",

@@ -6,6 +6,11 @@ import {
   Question,
 } from '@prisma/client';
 
+export interface User {
+  id: string,
+  scope: string[],
+}
+
 export type FlashcardInput = Omit<Flashcard, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type AnswerInput = Omit<Answer, 'id' | 'createdAt' | 'updatedAt'>;
