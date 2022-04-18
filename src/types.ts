@@ -4,11 +4,17 @@ import {
   FlashcardSet,
   Note,
   Question,
+  User,
 } from '@prisma/client';
 
-export interface User {
-  id: string,
-  scope: string[],
+export interface SessionUser {
+  id: string;
+  scope: string[];
+}
+
+export enum UserScopeEnum {
+  USER = 'User',
+  ADMIN = 'Admin',
 }
 
 export type FlashcardInput = Omit<Flashcard, 'id' | 'createdAt' | 'updatedAt'>;
@@ -21,5 +27,11 @@ export type FlashcardSetInput = Omit<
   FlashcardSet,
   'id' | 'createdAt' | 'updatedAt'
 >;
+
+export interface UserInput {
+  username: string;
+  password: string;
+  scope?: UserScopeEnum[];
+}
 
 export type NoteInput = Omit<Note, 'id' | 'createdAt' | 'updatedAt'>;

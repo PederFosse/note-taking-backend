@@ -1,7 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 import PederAuthService from '../services/peder-auth.service';
-import { hashSync, genSaltSync, compareSync, hash, compare } from 'bcryptjs';
-import { User } from '../types';
+import { hash, compare } from 'bcryptjs';
+import { SessionUser, UserInput, UserScopeEnum } from '../types';
+import { forbidden } from '@hapi/boom';
+
+function isAdmin(user: SessionUser): boolean {
+  return user.scope.includes(UserScopeEnum.ADMIN);
+}
+
+async function hashPass(clearTextPassword: string): Promise<string> {
+  return await hash(clearTextPassword, 10);
+}
 
 class PederAuthController {
   async login(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -12,14 +21,48 @@ class PederAuthController {
 
       const loginSuccess = await compare(password, user.password);
 
-      const userObj: User = { id: user.id, scope: user.scope };
-
       if (loginSuccess) {
-        // @ts-ignore
-        req.session.user = userObj;
+        req.session.userId = user.id;
       }
 
       res.send({ success: loginSuccess, session: req.session });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    // already validated in middleware
+    const user = req.user as SessionUser;
+
+    const userId = req.params.id;
+
+    const { username, password } = req.body;
+
+    const toUpdate: Partial<UserInput> = {
+      username,
+    };
+
+    if (password) {
+      const hashedPassword = await hashPass(password);
+      toUpdate.password = hashedPassword;
+    }
+
+    if (req.body.scope) {
+      if (isAdmin(user)) {
+        toUpdate.scope = req.body.scope;
+      } else {
+        throw forbidden();
+      }
+    }
+
+    try {
+      const updated = await PederAuthService.updateUser(userId, toUpdate);
+      res.send(updated);
     } catch (err) {
       next(err);
     }
@@ -32,11 +75,16 @@ class PederAuthController {
   ): Promise<void> {
     const { username, password } = req.body;
 
-    const hashedPwd = await hash(password, 10);
+    const hashedPassword = await hashPass(password);
+
+    const user = {
+      username,
+      password: hashedPassword,
+    };
 
     try {
-      const user = await PederAuthService.createUser(username, hashedPwd);
-      res.send(user);
+      const created = await PederAuthService.createUser(user);
+      res.send(created);
     } catch (err) {
       next(err);
     }

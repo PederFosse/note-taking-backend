@@ -2,6 +2,7 @@ import { Application, Request, Response, Router } from 'express';
 import { CommonRoutesConfig } from './common.routes.config';
 
 import authController from '../controllers/peder-auth.controller';
+import { validateAdmin } from '../middleware/auth';
 
 export class PederAuth extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -13,7 +14,9 @@ export class PederAuth extends CommonRoutesConfig {
 
     router.post('/login', authController.login);
 
-    router.post('/create-user', authController.createUser);
+    router.post('/user', authController.createUser);
+
+    router.put('/user/:id', validateAdmin, authController.updateUser);
 
     router.get('/session', (req: Request, res: Response) => {
       res.send(req.session);
