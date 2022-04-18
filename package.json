@@ -12,11 +12,13 @@
   "author": "Don Pederignon & Fredrikoh Rocher",
   "license": "ISC",
   "dependencies": {
+    "@hapi/boom": "^9.1.4",
     "@prisma/client": "^3.11.1",
     "express": "^4.17.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@types/boom": "^7.3.1",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.21",
     "nodemon": "^2.0.15",
