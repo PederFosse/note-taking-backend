@@ -3,8 +3,7 @@
 ## Run server with docker
 ### .env file (in root folder)
 
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
+POSTGRES_USER=postgres<br/>POSTGRES_PASSWORD=postgres
 
 ### Run server on docker:
 `docker-compose up -d`
