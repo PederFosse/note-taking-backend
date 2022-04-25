@@ -7,8 +7,12 @@ class QAService {
     this.prisma = new PrismaClient();
   }
 
-  async getAllQuestions(): Promise<Question[]> {
-    return await this.prisma.question.findMany();
+  async getAllQuestions(userId: string): Promise<Question[]> {
+    return await this.prisma.question.findMany({ where: { userId } });
+  }
+
+  async getQuestionsByUser(userId: string): Promise<Question[]> {
+    return await this.prisma.question.findMany({ where: { userId } });
   }
 
   async getAnswersToQuestion(questionId: string): Promise<Answer[]> {
@@ -17,7 +21,7 @@ class QAService {
     });
   }
 
-  async getOneQuestion(id: string): Promise<Question | null> {
+  async getOneQuestion(id: string): Promise<Question> {
     const result = await this.prisma.question.findFirst({ where: { id } });
     if (!result) {
       throw new Error('not found');
@@ -33,15 +37,15 @@ class QAService {
     return result;
   }
 
-  async createQuestion(data: QuestionInput): Promise<Question> {
+  async createQuestion(data: QuestionInput, userId: string): Promise<Question> {
     return await this.prisma.question.create({
-      data,
+      data: { ...data, userId },
     });
   }
 
-  async createAnswer(data: AnswerInput): Promise<Answer> {
+  async createAnswer(data: AnswerInput, userId: string): Promise<Answer> {
     return await this.prisma.answer.create({
-      data,
+      data: { ...data, userId },
     });
   }
 

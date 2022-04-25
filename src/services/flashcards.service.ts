@@ -7,8 +7,8 @@ class FlashCardsService {
     this.prisma = new PrismaClient();
   }
 
-  async getAll(): Promise<Flashcard[]> {
-    return await this.prisma.flashcard.findMany();
+  async getAll(userId: string): Promise<Flashcard[]> {
+    return await this.prisma.flashcard.findMany({ where: { userId } });
   }
 
   async getOne(id: string): Promise<Flashcard> {
@@ -23,9 +23,9 @@ class FlashCardsService {
     return result;
   }
 
-  async create(data: FlashcardInput): Promise<Flashcard> {
+  async create(data: FlashcardInput, userId: string): Promise<Flashcard> {
     const created = await this.prisma.flashcard.create({
-      data,
+      data: {...data, userId},
     });
     return created;
   }

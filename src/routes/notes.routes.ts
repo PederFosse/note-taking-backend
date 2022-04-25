@@ -13,19 +13,19 @@ export class NotesRoutes extends CommonRoutesConfig {
     const router = Router();
 
     // Get all notes
-    router.get('/', NotesController.getAllNotes);
+    router.get('/', NotesController.getAllNotes.bind(NotesController));
 
     // Get one note
-    router.get('/:id', NotesController.getOne);
+    router.get('/:id', NotesController.getOne.bind(NotesController));
 
     // Create new note
-    router.post('/', NotesController.createNewNote);
+    router.post('/', NotesController.createNewNote.bind(NotesController));
 
     // Update a note
-    router.put('/:id', NotesController.updateNote);
+    router.put('/:id', NotesController.updateNote.bind(NotesController));
 
     // Delete a note
-    router.delete('/:id', NotesController.deleteNote);
+    router.delete('/:id', NotesController.deleteNote.bind(NotesController));
 
     this.app.use(this.getName(), router);
     return this.app;

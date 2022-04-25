@@ -11,10 +11,14 @@ datasource db {
 }
 
 model FlashcardSet {
-  id        String      @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid()) @db.Uuid
   name      String
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], map: "flashcard_set_user_id_foreign")
+
   Flashcard Flashcard[]
 
   @@map("flashcard_set")
@@ -30,6 +34,10 @@ model Flashcard {
   createdAt      DateTime     @default(now()) @map("created_at")
   updatedAt      DateTime     @updatedAt @map("updated_at")
 
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], map: "flashcard_user_id_foreign")
+
+
   @@map("flashcard")
 }
 
@@ -40,7 +48,27 @@ model Question {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], map: "question_user_id_foreign")
+
   @@map("question")
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  scope     String[]
+
+  Answer       Answer[]
+  Note         Note[]
+  Question     Question[]
+  Flashcard    Flashcard[]
+  FlashcardSet FlashcardSet[]
+  Logins       Logins[]
+  @@map("user")
 }
 
 model Answer {
@@ -48,6 +76,8 @@ model Answer {
   questionId String   @map("question_id") @db.Uuid
   data       String
   question   Question @relation(fields: [questionId], references: [id], map: "answer_question_id_foreign")
+  userId     String   @map("user_id") @db.Uuid
+  user       User     @relation(fields: [userId], references: [id], map: "answer_user_id_foreign")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
@@ -55,11 +85,24 @@ model Answer {
 }
 
 model Note {
-  id        String   @id @default(uuid()) @db.Uuid
-  header    String
-  details   String
+  id      String @id @default(uuid()) @db.Uuid
+  header  String
+  details String
+  userId  String @map("user_id") @db.Uuid
+  user    User   @relation(fields: [userId], references: [id], map: "note_user_id_foreign")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("note")
+}
+
+model Logins {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id], map: "logins_user_id_foreign")
+
+  @@map("logins")
 }

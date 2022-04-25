@@ -1,4 +1,5 @@
 import { FlashcardSet, PrismaClient } from '@prisma/client';
+import { FlashcardSetInput } from '../types';
 
 class FlashCardSetService {
   private prisma: PrismaClient;
@@ -6,8 +7,8 @@ class FlashCardSetService {
     this.prisma = new PrismaClient();
   }
 
-  async getAll(): Promise<FlashcardSet[]> {
-    return await this.prisma.flashcardSet.findMany();
+  async getAll(userId: string): Promise<FlashcardSet[]> {
+    return await this.prisma.flashcardSet.findMany({ where: { userId } });
   }
 
   async getOne(id: string): Promise<FlashcardSet> {
@@ -18,14 +19,14 @@ class FlashCardSetService {
     return result;
   }
 
-  async create(data: Omit<FlashcardSet, 'id'>): Promise<FlashcardSet> {
+  async create(data: FlashcardSetInput, userId: string): Promise<FlashcardSet> {
     return await this.prisma.flashcardSet.create({
-      data,
+      data: {...data, userId},
     });
   }
 
   async update(
-    data: Omit<FlashcardSet, 'id'>,
+    data: FlashcardSetInput,
     id: string
   ): Promise<FlashcardSet> {
     return await this.prisma.flashcardSet.update({

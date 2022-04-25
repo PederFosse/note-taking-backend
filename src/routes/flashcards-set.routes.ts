@@ -10,15 +10,15 @@ export class FlashcardsSetRoutes extends CommonRoutesConfig {
   configureRoutes(): Application {
     const router = Router();
 
-    router.get('/', FlashcardsSetController.getAll);
+    router.get('/', FlashcardsSetController.getAll.bind(FlashcardsSetController));
 
-    router.post('/', FlashcardsSetController.create);
+    router.post('/', FlashcardsSetController.create.bind(FlashcardsSetController));
 
-    router.get('/:id', FlashcardsSetController.getOne);
+    router.get('/:id', FlashcardsSetController.getOne.bind(FlashcardsSetController));
 
-    router.put('/:id', FlashcardsSetController.update);
+    router.put('/:id', FlashcardsSetController.update.bind(FlashcardsSetController));
 
-    router.delete('/:id', FlashcardsSetController.destroy);
+    router.delete('/:id', FlashcardsSetController.destroy.bind(FlashcardsSetController));
 
     this.app.use(this.getName(), router);
     return this.app;
