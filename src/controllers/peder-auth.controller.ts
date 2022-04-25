@@ -68,13 +68,19 @@ class PederAuthController {
     }
   }
 
+  async logout(req: Request, res: Response): Promise<void> {
+    req.session.destroy(() => {
+      res.send({ success: true });
+    });
+  }
+
   async createUser(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     const { username, password } = req.body;
-    console.log("creating user");
+    console.log('creating user');
 
     const hashedPassword = await hashPass(password);
 

@@ -18,6 +18,8 @@ export class PederAuth extends CommonRoutesConfig {
 
     router.put('/user/:id', validateAdmin, authController.updateUser.bind(authController));
 
+    router.post('/logout', authController.logout.bind(authController));
+
     router.get('/session', (req: Request, res: Response) => {
       res.send(req.session);
     });
