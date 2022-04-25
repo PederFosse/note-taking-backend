@@ -4,7 +4,7 @@ import { SessionUser } from '../src/types';
 declare global {
   namespace Express {
     interface Request {
-      user?: SessionUser;
+      user: SessionUser;
     }
   }
 }

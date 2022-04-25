@@ -17,15 +17,24 @@ export enum UserScopeEnum {
   ADMIN = 'Admin',
 }
 
-export type FlashcardInput = Omit<Flashcard, 'id' | 'createdAt' | 'updatedAt'>;
+export type FlashcardInput = Omit<
+  Flashcard,
+  'id' | 'createdAt' | 'updatedAt' | 'userId'
+>;
 
-export type AnswerInput = Omit<Answer, 'id' | 'createdAt' | 'updatedAt'>;
+export type AnswerInput = Omit<
+  Answer,
+  'id' | 'createdAt' | 'updatedAt' | 'userId'
+>;
 
-export type QuestionInput = Omit<Question, 'id' | 'createdAt' | 'updatedAt'>;
+export type QuestionInput = Omit<
+  Question,
+  'id' | 'createdAt' | 'updatedAt' | 'userId'
+>;
 
 export type FlashcardSetInput = Omit<
   FlashcardSet,
-  'id' | 'createdAt' | 'updatedAt'
+  'id' | 'createdAt' | 'updatedAt' | 'userId'
 >;
 
 export interface UserInput {
@@ -34,4 +43,4 @@ export interface UserInput {
   scope?: UserScopeEnum[];
 }
 
-export type NoteInput = Omit<Note, 'id' | 'createdAt' | 'updatedAt'>;
+export type NoteInput = Omit<Note, 'id' | 'createdAt' | 'updatedAt' | 'userId'>;

@@ -1,23 +1,28 @@
 import { Answer, Question } from '@prisma/client';
 import { Request, Response } from 'express';
 import QAService from '../services/qa.service';
-import { AnswerInput, QuestionInput } from '../types';
+import { AnswerInput, QuestionInput, SessionUser } from '../types';
 
 class QAController {
   async createQuestion(req: Request, res: Response): Promise<void> {
-    const question: Question = await QAService.createQuestion(req.body);
+    const question: Question = await QAService.createQuestion(req.body, req.user.id);
     res.send(question);
   }
 
   async createAnswer(req: Request, res: Response): Promise<void> {
     const id = req.params.id;
     const answerInput: AnswerInput = { ...req.body, questionId: id };
-    const answer: Answer = await QAService.createAnswer(answerInput);
+    const answer: Answer = await QAService.createAnswer(answerInput, req.user.id);
     res.send(answer);
   }
 
   async getAllQuestions(req: Request, res: Response): Promise<void> {
     const questions: Question[] = await QAService.getAllQuestions();
+    res.send(questions);
+  }
+
+  async getAllQuestionsByUser(req: Request, res: Response): Promise<void> {
+    const questions: Question[] = await QAService.getQuestionsByUser(req.user.id);
     res.send(questions);
   }
 
@@ -60,10 +65,7 @@ class QAController {
   async updateQuestion(req: Request, res: Response): Promise<void> {
     const toUpdate: QuestionInput = req.body;
     const id: string = req.params.id;
-    const updated = await QAService.updateQuestion(
-      toUpdate,
-      id
-    );
+    const updated = await QAService.updateQuestion(toUpdate, id);
     if (!updated) {
       res
         .status(404)

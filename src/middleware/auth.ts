@@ -8,8 +8,12 @@ export async function validateUser(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  if (req.path == '/peder-auth/login' || req.path == '/peder-auth/create-user')
+  if (
+    req.path == '/peder-auth/login' ||
+    (req.path == '/peder-auth/user' && req.method === 'POST')
+  ) {
     return next();
+  }
 
   if (!req.session.userId) {
     return next(forbidden());

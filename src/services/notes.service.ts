@@ -8,8 +8,8 @@ class NotesService {
     this.prisma = new PrismaClient();
   }
 
-  async getAll(): Promise<Note[]> {
-    const result = await this.prisma.note.findMany();
+  async getAll(userId: string): Promise<Note[]> {
+    const result = await this.prisma.note.findMany({ where: { userId } });
     return result;
   }
 
@@ -25,9 +25,9 @@ class NotesService {
     return result;
   }
 
-  async createNewNote(data: NoteInput): Promise<Note> {
+  async createNewNote(data: NoteInput, userId: string): Promise<Note> {
     return await this.prisma.note.create({
-      data,
+      data: { ...data, userId },
     });
   }
 

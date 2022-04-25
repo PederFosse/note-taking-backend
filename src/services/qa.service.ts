@@ -11,6 +11,10 @@ class QAService {
     return await this.prisma.question.findMany();
   }
 
+  async getQuestionsByUser(userId: string): Promise<Question[]> {
+    return await this.prisma.question.findMany({ where: { userId } });
+  }
+
   async getAnswersToQuestion(questionId: string): Promise<Answer[]> {
     return await this.prisma.answer.findMany({
       where: { questionId },
@@ -33,15 +37,15 @@ class QAService {
     return result;
   }
 
-  async createQuestion(data: QuestionInput): Promise<Question> {
+  async createQuestion(data: QuestionInput, userId: string): Promise<Question> {
     return await this.prisma.question.create({
-      data,
+      data: { ...data, userId },
     });
   }
 
-  async createAnswer(data: AnswerInput): Promise<Answer> {
+  async createAnswer(data: AnswerInput, userId: string): Promise<Answer> {
     return await this.prisma.answer.create({
-      data,
+      data: { ...data, userId },
     });
   }
 

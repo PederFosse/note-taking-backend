@@ -74,6 +74,7 @@ class PederAuthController {
     next: NextFunction
   ): Promise<void> {
     const { username, password } = req.body;
+    console.log("creating user");
 
     const hashedPassword = await hashPass(password);
 
