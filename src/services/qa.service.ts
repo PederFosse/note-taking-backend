@@ -7,8 +7,8 @@ class QAService {
     this.prisma = new PrismaClient();
   }
 
-  async getAllQuestions(): Promise<Question[]> {
-    return await this.prisma.question.findMany();
+  async getAllQuestions(userId: string): Promise<Question[]> {
+    return await this.prisma.question.findMany({ where: { userId } });
   }
 
   async getQuestionsByUser(userId: string): Promise<Question[]> {
@@ -21,7 +21,7 @@ class QAService {
     });
   }
 
-  async getOneQuestion(id: string): Promise<Question | null> {
+  async getOneQuestion(id: string): Promise<Question> {
     const result = await this.prisma.question.findFirst({ where: { id } });
     if (!result) {
       throw new Error('not found');
