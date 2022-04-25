@@ -8,6 +8,18 @@
   - Added the required column `user_id` to the `question` table without a default value. This is not possible if the table is not empty.
 
 */
+-- Empty tables
+DELETE FROM "answer";
+DELETE FROM "flashcard";
+DELETE FROM "flashcard_set";
+DELETE FROM "note";
+DELETE FROM "question";
+DELETE FROM "flashcard_set";
+DELETE FROM "flashcard";
+DELETE FROM "question";
+DELETE FROM "answer";
+DELETE FROM "note";
+
 -- AlterTable
 ALTER TABLE "answer" ADD COLUMN     "user_id" UUID NOT NULL;
 
