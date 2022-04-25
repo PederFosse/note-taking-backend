@@ -27,6 +27,7 @@ class FlashcardsController {
       const flashcard = await FlashcardsService.getOne(req.params.id);
       res.send(flashcard);
     } catch (e) {
+      console.log("ERROR:", e);
       res.status(404).send({ message: 'flashcard not found' });
     }
   }

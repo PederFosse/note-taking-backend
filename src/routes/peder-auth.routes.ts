@@ -12,11 +12,11 @@ export class PederAuth extends CommonRoutesConfig {
   configureRoutes(): Application {
     const router = Router();
 
-    router.post('/login', authController.login);
+    router.post('/login', authController.login.bind(authController));
 
-    router.post('/user', authController.createUser);
+    router.post('/user', authController.createUser.bind(authController));
 
-    router.put('/user/:id', validateAdmin, authController.updateUser);
+    router.put('/user/:id', validateAdmin, authController.updateUser.bind(authController));
 
     router.get('/session', (req: Request, res: Response) => {
       res.send(req.session);
