@@ -8,6 +8,7 @@ import {
   CommonRoutesConfig,
   FlashCardsRoutes,
   FlashcardsSetRoutes,
+  LogRoutes,
   NotesRoutes,
   PederAuth,
   QARoutes,
@@ -33,6 +34,7 @@ routes.push(new NotesRoutes(app));
 routes.push(new QARoutes(app));
 routes.push(new FlashcardsSetRoutes(app));
 routes.push(new PederAuth(app));
+routes.push(new LogRoutes(app));
 
 console.log(routes.map((r) => r.name));
 
@@ -57,4 +59,5 @@ app.use((error: Boom, req: Request, res: Response, _) => {
   });
 });
 
+// TODO have port env variable
 app.listen(8080, () => console.log('server running!'));

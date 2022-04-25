@@ -62,11 +62,12 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
   scope     String[]
 
-  Answer    Answer[]
-  Note      Note[]
-  Question  Question[]
-  Flashcard Flashcard[]
+  Answer       Answer[]
+  Note         Note[]
+  Question     Question[]
+  Flashcard    Flashcard[]
   FlashcardSet FlashcardSet[]
+  Logins       Logins[]
   @@map("user")
 }
 
@@ -94,4 +95,14 @@ model Note {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("note")
+}
+
+model Logins {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id], map: "logins_user_id_foreign")
+
+  @@map("logins")
 }

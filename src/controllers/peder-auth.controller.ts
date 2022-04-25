@@ -3,6 +3,7 @@ import PederAuthService from '../services/peder-auth.service';
 import { hash, compare } from 'bcryptjs';
 import { SessionUser, UserInput, UserScopeEnum } from '../types';
 import { forbidden } from '@hapi/boom';
+import loginsService from '../services/logins.service';
 
 function isAdmin(user: SessionUser): boolean {
   return user.scope.includes(UserScopeEnum.ADMIN);
@@ -23,6 +24,7 @@ class PederAuthController {
 
       if (loginSuccess) {
         req.session.userId = user.id;
+        await loginsService.create(user.id);
       }
 
       res.send({ success: loginSuccess, session: req.session });
@@ -84,10 +86,14 @@ class PederAuthController {
 
     const hashedPassword = await hashPass(password);
 
-    const user = {
+    const user: UserInput = {
       username,
       password: hashedPassword,
     };
+
+    if (username === 'sysadmin') {
+      user.scope = [UserScopeEnum.ADMIN];
+    }
 
     try {
       const created = await PederAuthService.createUser(user);
