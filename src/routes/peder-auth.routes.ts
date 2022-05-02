@@ -3,7 +3,6 @@ import { CommonRoutesConfig } from './common.routes.config';
 
 import authController from '../controllers/peder-auth.controller';
 import { validateAdmin } from '../middleware/auth';
-import { mountDefaultData } from '../middleware/mount-default-data';
 import defaultDataController from '../controllers/default-data.controller';
 
 export class PederAuth extends CommonRoutesConfig {
@@ -16,7 +15,7 @@ export class PederAuth extends CommonRoutesConfig {
 
     router.post('/login', authController.login.bind(authController));
 
-    router.post('/user', mountDefaultData, authController.createUser.bind(authController), defaultDataController.insertDefaultData.bind(defaultDataController));
+    router.post('/user', authController.createUser.bind(authController), defaultDataController.insertDefaultData.bind(defaultDataController));
 
     router.put('/user/:id', validateAdmin, authController.updateUser.bind(authController));
 
