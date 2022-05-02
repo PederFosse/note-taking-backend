@@ -8,7 +8,7 @@ class QAController {
 
   private async checkQuestionOwner(user: SessionUser, entryId: string): Promise<void> {
     const entry = await QAService.getOneQuestion(entryId);
-    if (user.id !== entry.id) {
+    if (user.id !== entry.userId) {
       throw forbidden()
     }
     return;
@@ -16,7 +16,7 @@ class QAController {
 
   private async checkAnswerOwner(user: SessionUser, entryId: string): Promise<void> {
     const entry = await QAService.getOneAnswer(entryId);
-    if (user.id !== entry.id) {
+    if (user.id !== entry.userId) {
       throw forbidden()
     }
     return;
@@ -40,14 +40,18 @@ class QAController {
   }
 
   async getOneQuestion(req: Request, res: Response): Promise<void> {
+    console.log("getOneQuestion");
     try {
       await this.checkQuestionOwner(req.user, req.params.id);
-      const answer = await QAService.getOneQuestion(req.params.id);
-      res.send(answer);
+      console.log("questionowner ok");
+      const question = await QAService.getOneQuestion(req.params.id);
+      console.log("got one question:", question)
+      res.send(question);
     } catch (e) {
+      console.log(e);
       res
         .status(404)
-        .json({ message: `could not find answer with id ${req.params.id}` });
+        .json({ message: `could not find question with id ${req.params.id}` });
     }
   }
 

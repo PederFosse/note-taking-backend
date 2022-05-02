@@ -23,6 +23,7 @@ class QAService {
 
   async getOneQuestion(id: string): Promise<Question> {
     const result = await this.prisma.question.findFirst({ where: { id } });
+    console.log(result);
     if (!result) {
       throw new Error('not found');
     }

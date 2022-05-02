@@ -82,7 +82,6 @@ class PederAuthController {
     next: NextFunction
   ): Promise<void> {
     const { username, password } = req.body;
-    console.log('creating user');
 
     const hashedPassword = await hashPass(password);
 
@@ -96,8 +95,8 @@ class PederAuthController {
     }
 
     try {
-      const created = await PederAuthService.createUser(user);
-      res.send(created);
+      req.created = await PederAuthService.createUser(user);
+      next();
     } catch (err) {
       next(err);
     }

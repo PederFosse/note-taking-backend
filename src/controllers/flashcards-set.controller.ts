@@ -8,9 +8,9 @@ class FlashcardsSetController {
   constructor() {}
 
   private async checkOwner(user: SessionUser, entryId: string): Promise<void> {
-    const note = await FlashcardSetService.getOne(entryId);
+    const entry = await FlashcardSetService.getOne(entryId);
 
-    if (user.id !== note.userId) {
+    if (user.id !== entry.userId) {
       throw forbidden();
     }
     return;

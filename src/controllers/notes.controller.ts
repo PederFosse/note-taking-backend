@@ -8,9 +8,9 @@ import { NoteInput, SessionUser } from '../types';
 
 class NotesController {
   private async checkOwner(user: SessionUser, noteId: string): Promise<void> {
-    const note = await notesService.getOne(noteId);
+    const entry = await notesService.getOne(noteId);
 
-    if (user.id !== note.userId) {
+    if (user.id !== entry.userId) {
       throw forbidden();
     }
     return;
